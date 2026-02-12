@@ -4,30 +4,22 @@ on:
   schedule:
     - cron: "0 */12 * * *"
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   generate:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Generate pacman svg
-        uses: Platane/snk/svg-only@v3
+      - name: Generate pacman contribution graph
+        uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: kamilasouzx
-          outputs: |
-            dist/pacman-contribution-graph.svg
-            dist/pacman-contribution-graph-dark.svg?palette=github-dark
 
-      - name: Push to output branch
+      - name: Push pacman svg to output branch
         uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: output
